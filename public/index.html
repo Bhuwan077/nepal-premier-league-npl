@@ -3,60 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nepal Premier League 2026 | Official NPL 3rd Edition</title>
+  <title>Nepal Premier League 2026 | Official Broadcast Hub</title>
   
-  <!-- Premium Modern Fonts -->
+  <!-- Premium Sports Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- FontAwesome 6 -->
+  <!-- FontAwesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
+  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body class="npl-luxury-body">
 
   <!-- ═══════════════════════════════════════════════════
-       1. GLOBAL SYNC NOTIFICATION TOAST
+       1. GLOBAL SYNC TOAST NOTIFIER
        ═══════════════════════════════════════════════════ -->
   <div class="sync-toast-banner" id="syncToast">
     <div class="toast-content">
       <div class="toast-spinner" id="toastSpinner"></div>
       <div class="toast-text">
-        <strong id="toastTitle">Syncing with CricketData.org & NPL Database...</strong>
+        <strong id="toastTitle">Syncing Tournament Data...</strong>
         <span id="toastSub">Verifying all 32 match results, NRR, and live scorecards</span>
       </div>
     </div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════
-       2. TOP BROADCAST MARQUEE TICKER
+       2. TOP BROADCAST MATCHDAY RIBBON TICKER
        ═══════════════════════════════════════════════════ -->
   <div class="broadcast-ticker-bar" id="topTicker">
     <div class="ticker-beacon-tag">
       <span class="pulse-beacon-dot"></span>
-      <span class="beacon-label">NPL MATCH CENTER</span>
+      <span class="beacon-label">NPL MATCHDAY</span>
     </div>
 
     <div class="ticker-scroll-view">
       <div class="ticker-items-track" id="tickerItemsTrack">
-        <div class="ticker-pill opener">
+        <div class="ticker-pill opener" onclick="scrollToId('hero')">
           <span class="pill-tag-gold">MATCH 1 • OCT 26</span>
           <span class="pill-teams">Lumbini Lions vs Sudurpaschim Royals</span>
-          <span class="pill-meta">5:00 PM NPT • Kirtipur</span>
+          <span class="pill-meta">5:00 PM NPT • TU Ground</span>
         </div>
-        <div class="ticker-pill">
+        <div class="ticker-pill" onclick="scrollToId('fixtures-hub')">
           <span class="pill-tag-dark">MATCH 2 • OCT 27</span>
           <span class="pill-teams">Biratnagar Kings vs Chitwan Rhinos</span>
           <span class="pill-meta">12:30 PM NPT</span>
         </div>
-        <div class="ticker-pill">
+        <div class="ticker-pill" onclick="scrollToId('fixtures-hub')">
           <span class="pill-tag-dark">MATCH 3 • OCT 27</span>
           <span class="pill-teams">Karnali Yaks vs Janakpur Bolts</span>
           <span class="pill-meta">5:00 PM NPT</span>
         </div>
-        <div class="ticker-pill">
+        <div class="ticker-pill" onclick="scrollToId('fixtures-hub')">
           <span class="pill-tag-dark">MATCH 4 • OCT 28</span>
           <span class="pill-teams">Pokhara Avengers vs Sudurpaschim Royals</span>
           <span class="pill-meta">5:00 PM NPT</span>
@@ -66,10 +67,11 @@
 
     <div class="ticker-action-capsules">
       <button class="btn-sync-quick" onclick="triggerSyncAllResults()" title="Click to sync all match results">
-        <i class="fas fa-sync-alt" id="quickSyncIcon"></i> SYNC ALL RESULTS
+        <i class="fas fa-sync-alt" id="quickSyncIcon"></i>
+        <span>SYNC RESULTS</span>
       </button>
       <span class="capsule-icc"><i class="fas fa-shield-alt"></i> ICC T20 STATUS</span>
-      <span class="capsule-drs"><i class="fas fa-video"></i> DRS ACTIVE</span>
+      <span class="capsule-drs"><i class="fas fa-video"></i> DRS 3D</span>
     </div>
   </div>
 
@@ -78,6 +80,8 @@
        ═══════════════════════════════════════════════════ -->
   <nav class="floating-navbar" id="floatingNav">
     <div class="nav-inner-container">
+      
+      <!-- League Brand Crest -->
       <a href="#hero" class="brand-crest-anchor" onclick="scrollToId('hero')">
         <div class="npl-diamond-crest">
           <span class="crest-country">NEPAL</span>
@@ -89,9 +93,9 @@
         </div>
       </a>
 
-      <!-- Edition Switcher Dropdown -->
+      <!-- Edition Selector Dropdown -->
       <div class="edition-glass-pill">
-        <i class="fas fa-trophy"></i>
+        <i class="fas fa-trophy text-gold"></i>
         <label for="editionSelector">EDITION:</label>
         <select id="editionSelector" onchange="switchSeasonEdition(this.value)">
           <option value="season3" selected>Season 3 (2026 - Current)</option>
@@ -99,6 +103,7 @@
         </select>
       </div>
 
+      <!-- Navigation Links -->
       <div class="nav-links-cluster" id="navLinksCluster">
         <a href="#hero" class="nav-link-item active" data-sec="hero"><i class="fas fa-home"></i> Home</a>
         <a href="#live-hub" class="nav-link-item" data-sec="live"><i class="fas fa-satellite-dish"></i> Live Center</a>
@@ -108,145 +113,143 @@
         <a href="#teams-hub" class="nav-link-item" data-sec="teams"><i class="fas fa-users"></i> Franchises</a>
       </div>
 
-      <!-- Action: Sync Button -->
+      <!-- Live Sync Action Button -->
       <div class="nav-action-wrap">
         <button class="btn-nav-sync" onclick="triggerSyncAllResults()">
           <i class="fas fa-sync-alt" id="navSyncIcon"></i>
-          <span>Sync Results</span>
+          <span>Sync All Results</span>
         </button>
       </div>
 
-      <button class="mobile-hamburger-btn" id="mobileHamburger" aria-label="Menu">
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-hamburger-btn" id="mobileHamburger" aria-label="Toggle navigation menu">
         <span></span><span></span><span></span>
       </button>
+
     </div>
   </nav>
 
   <!-- ═══════════════════════════════════════════════════
-       4. HERO BROADCAST STAGE
+       4. HERO BROADCAST MATCHDAY SHOWCASE (CENTERPIECE)
        ═══════════════════════════════════════════════════ -->
   <header class="hero-broadcast-stage" id="hero">
     <div class="hero-stadium-vignette"></div>
     <div class="hero-spotlight-aurora"></div>
 
-    <div class="hero-grid-wrapper">
-      
-      <!-- Left Column: Big Headline & Live Countdown -->
-      <div class="hero-lead-column">
-        <div class="hero-kicker-strip">
-          <span class="kicker-pill neon-red"><i class="fas fa-bolt"></i> NPL 3RD EDITION</span>
-          <span class="kicker-pill neon-blue"><i class="fas fa-certificate"></i> OFFICIAL ICC TWENTY20</span>
-          <span class="kicker-pill neon-green"><i class="fas fa-cube"></i> DRS 3D BALL-TRACKING</span>
+    <div class="hero-container">
+
+      <!-- Official Matchday Header Tag -->
+      <div class="hero-lead-banner">
+        <div class="matchday-official-pill">
+          <span class="live-pulse-dot"></span>
+          <span>OFFICIAL OPENING CLASH • MONDAY, OCT 26, 2026 • 5:00 PM NPT</span>
         </div>
-
-        <h1 class="hero-huge-title">
-          THE HIMALAYAN<br>
-          <span class="fire-gradient-text">CRICKET EXTRAVAGANZA.</span>
-        </h1>
-
-        <p class="hero-lead-paragraph">
-          8 Mega Franchises. 32 High-Voltage Twenty20 Fixtures. Official ICC T20 Status.
-          Live from the iconic <strong>Tribhuvan University Ground, Kirtipur</strong>.
-        </p>
-
-        <!-- Live Countdown Glass Card -->
-        <div class="live-countdown-pod" id="heroCountdownPod">
-          <div class="pod-top-bar">
-            <span class="pod-title-tag"><i class="far fa-clock"></i> COUNTDOWN TO OPENING CLASH</span>
-            <span class="pod-match-tag">LUMBINI LIONS vs SUDURPASCHIM ROYALS</span>
-          </div>
-
-          <div class="pod-clock-digits">
-            <div class="clock-segment"><span id="cdDays">00</span><small>DAYS</small></div>
-            <div class="clock-colon">:</div>
-            <div class="clock-segment"><span id="cdHours">00</span><small>HOURS</small></div>
-            <div class="clock-colon">:</div>
-            <div class="clock-segment"><span id="cdMins">00</span><small>MINUTES</small></div>
-            <div class="clock-colon">:</div>
-            <div class="clock-segment"><span id="cdSecs">00</span><small>SECONDS</small></div>
-          </div>
-
-          <div class="pod-bottom-bar">
-            <span><i class="fas fa-map-marker-alt"></i> Tribhuvan University Cricket Ground, Kirtipur</span>
-            <span><i class="fas fa-calendar-day"></i> Monday, October 26 • 5:00 PM NPT</span>
-          </div>
-        </div>
-
-        <div class="hero-cta-cluster">
-          <button class="btn-primary-action" onclick="scrollToId('live-hub')">
-            <i class="fas fa-broadcast-tower"></i> Launch Live Match Center
-          </button>
-          <button class="btn-sync-action" onclick="triggerSyncAllResults()">
-            <i class="fas fa-sync-alt" id="heroSyncIcon"></i> Sync All Tournament Data
-          </button>
-          <button class="btn-secondary-action" onclick="scrollToId('fixtures-hub')">
-            <i class="fas fa-calendar-check"></i> View 32 Fixtures
-          </button>
+        <div class="matchday-badges-strip">
+          <span class="hero-mini-tag gold"><i class="fas fa-trophy"></i> NPL 3RD EDITION</span>
+          <span class="hero-mini-tag blue"><i class="fas fa-certificate"></i> OFFICIAL ICC TWENTY20</span>
+          <span class="hero-mini-tag green"><i class="fas fa-shield-alt"></i> ULTRA-EDGE 3D DRS</span>
         </div>
       </div>
 
-      <!-- Right Column: Opening Match Showcase Card -->
-      <div class="hero-feature-column">
-        <div class="feature-match-showcase">
-          <div class="showcase-top-ribbon">
-            <span class="ribbon-match-number">MATCH 1 • BLOCKBUSTER OPENER</span>
-            <span class="ribbon-drs-badge"><i class="fas fa-shield-alt"></i> DRS ENABLED</span>
+      <!-- Grand Broadcast Match Arena Card -->
+      <div class="broadcast-arena-card">
+        
+        <!-- Team 1: Lumbini Lions -->
+        <div class="arena-team-side left">
+          <div class="arena-crest-box" id="heroCrestLBL">
+            <!-- Dynamically populated with high-res SVG crest -->
           </div>
-
-          <div class="showcase-teams-ring">
-            <div class="showcase-team-box left">
-              <div class="showcase-crest lbl-crest-glow">LBL</div>
-              <h3 class="showcase-name">Lumbini Lions</h3>
-              <span class="showcase-captain"><i class="fas fa-crown"></i> Rohit Paudel (C)</span>
-              <span class="showcase-stars">Ben Cutting • Unmukt Chand</span>
-            </div>
-
-            <div class="showcase-vs-pod">
-              <div class="vs-neon-circle">VS</div>
-              <span class="vs-date-time">OCT 26<br><strong>5:00 PM</strong></span>
-            </div>
-
-            <div class="showcase-team-box right">
-              <div class="showcase-crest spr-crest-glow">SPR</div>
-              <h3 class="showcase-name">Sudurpaschim Royals</h3>
-              <span class="showcase-captain"><i class="fas fa-crown"></i> Dipendra Airee (C)</span>
-              <span class="showcase-stars">Scott Kuggeleijn • McMullen</span>
+          <div class="arena-team-info">
+            <h2 class="arena-team-name">LUMBINI LIONS</h2>
+            <div class="arena-team-meta">
+              <span class="arena-captain"><i class="fas fa-crown text-gold"></i> Rohit Paudel (C)</span>
+              <span class="arena-stars">Ben Cutting • Unmukt Chand</span>
             </div>
           </div>
-
-          <div class="showcase-specs-row">
-            <div class="spec-tile">
-              <span class="spec-key">VENUE</span>
-              <span class="spec-val">TU Ground, Kirtipur</span>
-            </div>
-            <div class="spec-tile">
-              <span class="spec-key">WEATHER</span>
-              <span class="spec-val">22°C Clear Night</span>
-            </div>
-            <div class="spec-tile">
-              <span class="spec-key">SANCTION</span>
-              <span class="spec-val text-gold">Official ICC T20</span>
-            </div>
-          </div>
-
-          <button class="btn-inspect-feature" onclick="scrollToId('live-hub')">
-            <i class="fas fa-binoculars"></i> View Matchday Intel & Probable XIs
-          </button>
         </div>
+
+        <!-- Center Match Arena Hub: Countdown & Specs -->
+        <div class="arena-center-hub">
+          <div class="arena-stage-title">MATCH 1 • LEAGUE OPENER</div>
+          
+          <div class="arena-vs-badge">
+            <span>VS</span>
+          </div>
+
+          <!-- Luxury Countdown Pod -->
+          <div class="arena-countdown-unit">
+            <span class="countdown-unit-label">MATCH STARTS IN</span>
+            <div class="arena-clock-grid">
+              <div class="clock-pod">
+                <span class="pod-num" id="cdDays">00</span>
+                <span class="pod-lbl">DAYS</span>
+              </div>
+              <span class="clock-sep">:</span>
+              <div class="clock-pod">
+                <span class="pod-num" id="cdHours">00</span>
+                <span class="pod-lbl">HRS</span>
+              </div>
+              <span class="clock-sep">:</span>
+              <div class="clock-pod">
+                <span class="pod-num" id="cdMins">00</span>
+                <span class="pod-lbl">MIN</span>
+              </div>
+              <span class="clock-sep">:</span>
+              <div class="clock-pod">
+                <span class="pod-num" id="cdSecs">00</span>
+                <span class="pod-lbl">SEC</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Venue & Broadcast Spec Strip -->
+          <div class="arena-venue-strip">
+            <span><i class="fas fa-map-marker-alt text-crimson"></i> TU Cricket Ground, Kirtipur</span>
+            <span><i class="fas fa-cloud-moon text-cyan"></i> 22°C Clear Night</span>
+          </div>
+        </div>
+
+        <!-- Team 2: Sudurpaschim Royals -->
+        <div class="arena-team-side right">
+          <div class="arena-crest-box" id="heroCrestSPR">
+            <!-- Dynamically populated with high-res SVG crest -->
+          </div>
+          <div class="arena-team-info">
+            <h2 class="arena-team-name">SUDURPASCHIM ROYALS</h2>
+            <div class="arena-team-meta">
+              <span class="arena-captain"><i class="fas fa-crown text-gold"></i> Dipendra Singh Airee (C)</span>
+              <span class="arena-stars">Scott Kuggeleijn • Brandon McMullen</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Button Controls -->
+      <div class="hero-action-buttons">
+        <button class="btn-hero-primary" onclick="scrollToId('live-hub')">
+          <i class="fas fa-satellite-dish"></i> Open Matchday Live Center
+        </button>
+        <button class="btn-hero-sync" onclick="triggerSyncAllResults()">
+          <i class="fas fa-sync-alt" id="heroSyncIcon"></i> Sync All Tournament Results
+        </button>
+        <button class="btn-hero-secondary" onclick="scrollToId('fixtures-hub')">
+          <i class="fas fa-calendar-check"></i> Explore All 32 Fixtures
+        </button>
       </div>
 
     </div>
   </header>
 
   <!-- ═══════════════════════════════════════════════════
-       5. LIVE MATCHDAY CENTER & REAL-TIME STREAM
+       5. LIVE MATCHDAY CENTER & STREAM HUB
        ═══════════════════════════════════════════════════ -->
   <section class="broadcast-section" id="live-hub">
     <div class="section-container">
       
       <div class="section-title-bar">
         <div>
-          <span class="section-tag-kicker"><i class="fas fa-satellite-dish"></i> REAL-TIME MATCH ENGINE</span>
+          <span class="section-tag-kicker"><i class="fas fa-broadcast-tower"></i> BROADCAST ENGINE</span>
           <h2 class="section-big-title">LIVE MATCH CENTER</h2>
         </div>
 
@@ -255,7 +258,7 @@
             <i class="fas fa-flag"></i> NPL Season 3 Matchday
           </button>
           <button class="mode-tab-btn" id="btnModeGlobal" onclick="switchLiveHubMode('global')">
-            <i class="fas fa-globe"></i> CricketData Global API (Live Scores)
+            <i class="fas fa-globe"></i> Global CricScore API
           </button>
           <button class="btn-inline-sync" onclick="triggerSyncAllResults()" title="Sync live feeds">
             <i class="fas fa-sync-alt"></i> Sync
@@ -282,7 +285,7 @@
       
       <div class="section-title-bar">
         <div>
-          <span class="section-tag-kicker"><i class="fas fa-calendar-alt"></i> COMPLETE 32 MATCH SCHEDULE</span>
+          <span class="section-tag-kicker"><i class="fas fa-calendar-alt"></i> SCHEDULE & RESULTS</span>
           <h2 class="section-big-title" id="fixturesHeading">NPL 3RD EDITION FIXTURES (2026)</h2>
         </div>
 
@@ -314,7 +317,7 @@
       
       <div class="section-title-bar">
         <div>
-          <span class="section-tag-kicker"><i class="fas fa-list-ol"></i> LEAGUE STANDINGS & NRR</span>
+          <span class="section-tag-kicker"><i class="fas fa-list-ol"></i> LEAGUE STANDINGS</span>
           <h2 class="section-big-title" id="standingsHeading">POINTS TABLE — 3RD EDITION</h2>
         </div>
 
@@ -334,19 +337,19 @@
           <table class="broadcast-league-table">
             <thead>
               <tr>
-                <th style="width: 50px;">POS</th>
-                <th>TEAM</th>
-                <th class="text-center">MATCHES</th>
-                <th class="text-center">WON</th>
-                <th class="text-center">LOST</th>
+                <th style="width: 54px;">POS</th>
+                <th>FRANCHISE</th>
+                <th class="text-center">P</th>
+                <th class="text-center">W</th>
+                <th class="text-center">L</th>
                 <th class="text-center">N/R</th>
                 <th class="text-center">NET RUN RATE</th>
-                <th class="text-center col-pts">POINTS</th>
+                <th class="text-center col-pts">PTS</th>
                 <th class="text-center">RECENT FORM</th>
               </tr>
             </thead>
             <tbody id="standingsTableBody">
-              <!-- Rendered by app.js -->
+              <!-- Rendered dynamically by app.js -->
             </tbody>
           </table>
         </div>
@@ -363,13 +366,13 @@
       
       <div class="section-title-bar">
         <div>
-          <span class="section-tag-kicker"><i class="fas fa-crown"></i> INDIVIDUAL HONORS</span>
-          <h2 class="section-big-title">TOP RUN SCORERS & WICKET TAKERS</h2>
+          <span class="section-tag-kicker"><i class="fas fa-crown"></i> TOURNAMENT HONORS</span>
+          <h2 class="section-big-title">ORANGE & PURPLE CAP LEADERS</h2>
         </div>
 
         <div class="cap-toggles-row">
-          <span class="cap-badge-pill orange"><i class="fas fa-baseball-ball"></i> Orange Cap Race (Batters)</span>
-          <span class="cap-badge-pill purple"><i class="fas fa-bullseye"></i> Purple Cap Race (Bowlers)</span>
+          <span class="cap-badge-pill orange"><i class="fas fa-baseball-ball"></i> Orange Cap (Top Run Scorers)</span>
+          <span class="cap-badge-pill purple"><i class="fas fa-bullseye"></i> Purple Cap (Top Wicket Takers)</span>
           <button class="btn-inline-sync" onclick="triggerSyncAllResults()" title="Sync Leaderboards">
             <i class="fas fa-sync-alt"></i> Sync Stats
           </button>
@@ -377,14 +380,14 @@
       </div>
 
       <div class="stats-lux-grid" id="statsLuxGrid">
-        <!-- Rendered by app.js -->
+        <!-- Rendered dynamically by app.js -->
       </div>
 
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════
-       9. 8 FRANCHISES & COMPLETE ROSTERS
+       9. 8 MEGA FRANCHISES & SQUADS
        ═══════════════════════════════════════════════════ -->
   <section class="broadcast-section" id="teams-hub">
     <div class="section-container">
@@ -392,20 +395,20 @@
       <div class="section-title-bar">
         <div>
           <span class="section-tag-kicker"><i class="fas fa-shield-alt"></i> 8 MEGA FRANCHISES</span>
-          <h2 class="section-big-title">TEAMS & COMPLETE ROSTERS</h2>
+          <h2 class="section-big-title">TEAMS & COMPLETE SQUADS</h2>
         </div>
-        <p class="section-sub-note">Nepal's finest stars joined by proven international match-winners.</p>
+        <p class="section-sub-note">Nepal's marquee stars and premier international T20 match-winners.</p>
       </div>
 
       <div class="franchises-lux-grid" id="franchisesLuxGrid">
-        <!-- Rendered by app.js -->
+        <!-- Rendered dynamically by app.js -->
       </div>
 
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════
-       10. SYNC RESULT VERIFICATION MODAL
+       10. SYNC VERIFICATION MODAL
        ═══════════════════════════════════════════════════ -->
   <div class="sync-modal-overlay" id="syncModalOverlay">
     <div class="sync-modal-card">
@@ -413,7 +416,7 @@
         <div class="sync-header-icon"><i class="fas fa-satellite-dish text-cyan"></i></div>
         <div>
           <h3 class="sync-modal-title">Live Result Synchronization</h3>
-          <span class="sync-modal-sub">CricketData.org API • OpenCricket • NPL Database</span>
+          <span class="sync-modal-sub">CricketData.org API • OpenCricket • Official NPL Engine</span>
         </div>
         <button class="sync-modal-close" onclick="closeSyncModal()"><i class="fas fa-times"></i></button>
       </div>
@@ -421,7 +424,7 @@
       <div class="sync-steps-list" id="syncStepsList">
         <div class="sync-step-row active">
           <span class="step-icon"><i class="fas fa-circle-notch fa-spin"></i></span>
-          <span class="step-text">Connecting to CricketData.org REST API...</span>
+          <span class="step-text">Connecting to CricketData.org API...</span>
         </div>
         <div class="sync-step-row">
           <span class="step-icon"><i class="far fa-circle"></i></span>
@@ -438,7 +441,7 @@
       </div>
 
       <div class="sync-modal-footer">
-        <span class="sync-timestamp" id="syncTimestamp">Ready to sync</span>
+        <span class="sync-timestamp" id="syncTimestamp">Ready to synchronize</span>
         <button class="btn-sync-confirm" onclick="executeSyncAction()">
           <i class="fas fa-bolt"></i> Run Deep Sync
         </button>
@@ -469,33 +472,33 @@
             <span class="crest-acronym">NPL</span>
           </div>
           <h4>NEPAL PREMIER LEAGUE</h4>
-          <p>The flagship Twenty20 cricket tournament sanctioned by the Cricket Association of Nepal (CAN) and the International Cricket Council (ICC).</p>
+          <p>The premier Twenty20 franchise league sanctioned by the Cricket Association of Nepal (CAN) and International Cricket Council (ICC).</p>
         </div>
 
         <div class="footer-col-nav">
-          <h5>QUICK ACCESS</h5>
+          <h5>LEAGUE NAVIGATION</h5>
           <ul>
             <li><a href="#live-hub">Live Match Center</a></li>
             <li><a href="#fixtures-hub">32 Match Schedule</a></li>
             <li><a href="#standings-hub">Points Table & NRR</a></li>
-            <li><a href="#stats-hub">Top Scorers & Wickets</a></li>
+            <li><a href="#stats-hub">Orange & Purple Cap</a></li>
             <li><a href="#teams-hub">Franchise Rosters</a></li>
           </ul>
         </div>
 
         <div class="footer-col-api">
-          <h5>ACTIVE API INTEGRATIONS</h5>
+          <h5>ACTIVE INTEGRATIONS</h5>
           <div class="api-pill-badge">
             <span class="pill-dot-green"></span>
-            <span>CricketData.org API (Key: Valid)</span>
+            <span>CricketData.org REST API</span>
           </div>
           <div class="api-pill-badge">
             <span class="pill-dot-green"></span>
-            <span>OpenCricket Ball-by-Ball Feed</span>
+            <span>OpenCricket Live Feed</span>
           </div>
           <div class="api-pill-badge">
             <span class="pill-dot-green"></span>
-            <span>Official NPL 3rd Edition Database</span>
+            <span>Official NPL 3rd Edition Engine</span>
           </div>
         </div>
       </div>
@@ -507,6 +510,8 @@
     </div>
   </footer>
 
+  <!-- Include custom crests first, then app controller -->
+  <script src="/crests.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

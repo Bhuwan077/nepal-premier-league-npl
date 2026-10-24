@@ -26,11 +26,30 @@ const FRANCHISE_MAP = {
   'PKA': { name: 'Pokhara Avengers', color: '#0891b2', short: 'PKA' }
 };
 
+function getTeamCodeFromName(name) {
+  if (!name) return 'NPL';
+  const clean = String(name).toLowerCase();
+  for (const [code, info] of Object.entries(FRANCHISE_MAP)) {
+    if (clean.includes(info.name.toLowerCase()) || clean.includes(code.toLowerCase())) {
+      return code;
+    }
+  }
+  return 'NPL';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   setupNavigation();
   startOpeningCountdown();
+  renderHeroShowcaseCrests();
   bootstrapData();
 });
+
+function renderHeroShowcaseCrests() {
+  const lbl = document.getElementById('heroCrestLBL');
+  const spr = document.getElementById('heroCrestSPR');
+  if (lbl) lbl.innerHTML = getTeamCrest('LBL', 'hero-large-crest');
+  if (spr) spr.innerHTML = getTeamCrest('SPR', 'hero-large-crest');
+}
 
 // ═══════════════════════════════════════════════════
 // 1. ACTION: SYNC ALL RESULTS (VERIFIED LIVE ACTION)
@@ -42,22 +61,18 @@ async function triggerSyncAllResults() {
   const toastTitle = document.getElementById('toastTitle');
   const toastSub = document.getElementById('toastSub');
   
-  // Animate spinning sync icons
   spinAllSyncIcons(true);
 
-  // Show Toast
   if (toast) {
     toastTitle.textContent = 'Synchronizing with Live Cricket Databases...';
     toastSub.textContent = 'Flushing cache and fetching verified 32-match scores & standings';
     toast.classList.add('active');
   }
 
-  // Show Modal
   if (modal) {
     modal.classList.add('active');
   }
 
-  // Run the sync execution
   await executeSyncAction();
 }
 
@@ -93,8 +108,7 @@ async function executeSyncAction() {
     const res = await fetch('/api/sync', { method: 'POST' });
     const data = await res.json();
 
-    // Step 2
-    if (stepsList) {
+    if (stepsList && stepsList.children.length >= 4) {
       stepsList.children[0].className = 'sync-step-row done';
       stepsList.children[0].querySelector('.step-icon').innerHTML = '<i class="fas fa-check-circle text-emerald"></i>';
       stepsList.children[1].className = 'sync-step-row active';
@@ -103,8 +117,7 @@ async function executeSyncAction() {
 
     await new Promise(r => setTimeout(r, 400));
 
-    // Step 3
-    if (stepsList) {
+    if (stepsList && stepsList.children.length >= 4) {
       stepsList.children[1].className = 'sync-step-row done';
       stepsList.children[1].querySelector('.step-icon').innerHTML = '<i class="fas fa-check-circle text-emerald"></i>';
       stepsList.children[2].className = 'sync-step-row active';
@@ -113,8 +126,7 @@ async function executeSyncAction() {
 
     await new Promise(r => setTimeout(r, 400));
 
-    // Step 4
-    if (stepsList) {
+    if (stepsList && stepsList.children.length >= 4) {
       stepsList.children[2].className = 'sync-step-row done';
       stepsList.children[2].querySelector('.step-icon').innerHTML = '<i class="fas fa-check-circle text-emerald"></i>';
       stepsList.children[3].className = 'sync-step-row active';
@@ -123,8 +135,7 @@ async function executeSyncAction() {
 
     await new Promise(r => setTimeout(r, 400));
 
-    // Finished
-    if (stepsList) {
+    if (stepsList && stepsList.children.length >= 4) {
       stepsList.children[3].className = 'sync-step-row done';
       stepsList.children[3].querySelector('.step-icon').innerHTML = '<i class="fas fa-check-circle text-emerald"></i>';
     }
@@ -133,7 +144,7 @@ async function executeSyncAction() {
       timestampEl.textContent = `Synced at ${data.nepal_time || new Date().toLocaleTimeString()} • 100% Verified`;
     }
 
-    // Reload datasets and re-render views live!
+    // Reload datasets and re-render views live
     await bootstrapData();
 
     if (toast) {
@@ -141,13 +152,13 @@ async function executeSyncAction() {
       toastSub.textContent = 'All 32 fixtures, points table standings, and player statistics are verified.';
       setTimeout(() => {
         toast.classList.remove('active');
-      }, 3500);
+      }, 3000);
     }
   } catch (err) {
     console.error('Sync failed:', err);
     if (toast) {
       toastTitle.textContent = 'Sync fallback to verified local records';
-      toastSub.textContent = 'All tournament stats successfully loaded.';
+      toastSub.textContent = 'All tournament stats successfully verified.';
       setTimeout(() => toast.classList.remove('active'), 2500);
     }
   } finally {
@@ -257,6 +268,7 @@ async function bootstrapData() {
     season3Data = res3;
     season1Data = res1;
 
+    renderHeroShowcaseCrests();
     renderActiveView();
     updateLiveHubView();
   } catch (err) {
@@ -379,15 +391,15 @@ function renderUpcomingMatchdayState(status) {
 
       <div class="preview-grid-2col">
         <div class="preview-match-lead">
-          <span style="font-size:11px; font-weight:800; color:var(--crimson); letter-spacing:1px; text-transform:uppercase; margin-bottom:4px;">
+          <span style="font-size:11px; font-weight:800; color:var(--crimson); letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; display:block;">
             MATCH 1 • BLOCKBUSTER OPENING CLASH
           </span>
           <h3 class="preview-title-large">${next.title}</h3>
           
           <div class="preview-meta-row">
-            <span><i class="fas fa-calendar-day"></i> Monday, October 26</span>
-            <span><i class="far fa-clock"></i> 5:00 PM NPT</span>
-            <span><i class="fas fa-map-marker-alt"></i> TU Cricket Ground, Kirtipur</span>
+            <span><i class="fas fa-calendar-day text-gold"></i> Monday, October 26</span>
+            <span><i class="far fa-clock text-cyan"></i> 5:00 PM NPT</span>
+            <span><i class="fas fa-map-marker-alt text-crimson"></i> TU Cricket Ground, Kirtipur</span>
           </div>
 
           <div class="pitch-weather-box">
@@ -421,7 +433,7 @@ function renderSimulatedLiveEngine(d) {
   const container = document.getElementById('liveHubViewport');
   if (!container || !d) return;
 
-  const balls = d.recent_balls.map(b => {
+  const balls = (d.recent_balls || []).map(b => {
     let cls = 'normal';
     if (b === '0') cls = 'dot';
     else if (b === '4') cls = 'four';
@@ -430,7 +442,7 @@ function renderSimulatedLiveEngine(d) {
     return `<div class="delivery-pill ${cls}">${b}</div>`;
   }).join('');
 
-  const batsmen = d.current_batsmen.map(b => `
+  const batsmen = (d.current_batsmen || []).map(b => `
     <tr>
       <td>${b.name}</td>
       <td><strong>${b.runs}</strong></td>
@@ -441,118 +453,97 @@ function renderSimulatedLiveEngine(d) {
     </tr>
   `).join('');
 
-  const bowler = d.current_bowler;
+  const bowler = d.current_bowler || {};
 
   container.innerHTML = `
     <div class="sim-live-board">
       <div class="sim-header">
         <div style="display:flex; align-items:center; gap:12px;">
           <span class="sim-active-tag"><span class="pulse-beacon-dot"></span> LIVE SIMULATOR ACTIVE</span>
-          <span style="font-size:12px; color:var(--text-muted);">${d.match} • ${d.venue}</span>
+          <span style="font-size:12px; color:var(--text-dim);">${d.match_title}</span>
         </div>
-        <button class="sim-switch-btn" onclick="toggleSimulationMode()" style="background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); color:#fff;">
-          <i class="fas fa-times"></i> Exit Simulator Mode
+        <button class="sim-switch-btn" onclick="toggleSimulationMode()">
+          <i class="fas fa-stop"></i> Exit Simulator (Return to Live Schedule)
         </button>
       </div>
 
-      <div class="sim-main-grid">
-        <div class="sim-score-box">
-          <div class="team-name-tag">${d.batting_team.name} <span style="font-size:12px; color:var(--gold); font-weight:700;">(BATTING)</span></div>
-          
-          <div class="runs-overs-row">
-            <span class="big-runs">${d.batting_team.score}/${d.batting_team.wickets}</span>
-            <span class="overs-tag">(${d.batting_team.overs} ov)</span>
+      <div class="sim-scoreboard-card">
+        <div class="sim-team-pane batting">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              ${getTeamCrest('LBL', 'fixture-crest')}
+              <strong style="font-size:16px;">${d.batting_team}</strong>
+            </div>
+            <span style="font-size:11px; background:rgba(245,158,11,0.15); color:var(--gold); padding:2px 8px; border-radius:3px;">BATTING</span>
+          </div>
+          <div style="font-family:var(--font-mono); font-size:32px; font-weight:800; color:#fff;">
+            ${d.score} <small style="font-size:14px; color:var(--text-dim);">(${d.overs} ov)</small>
+          </div>
+          <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">
+            CRR: <strong style="color:var(--cyan);">${d.crr}</strong> &nbsp;|&nbsp; Target: <strong style="color:var(--text-muted);">${d.target}</strong>
           </div>
 
-          <div class="rates-line">
-            <span>Current Run Rate: <strong>${d.batting_team.crr}</strong></span>
-            <span>Target: <strong>${d.batting_team.target}</strong></span>
-          </div>
-
-          <div class="target-need-alert">
-            <i class="fas fa-crosshairs"></i> ${d.batting_team.need}
-          </div>
-        </div>
-
-        <div class="sim-balls-reel">
-          <span class="reel-label"><i class="fas fa-stream"></i> BALL-BY-BALL DELIVERIES (REAL-TIME ENGINE)</span>
-          <div class="balls-flex-wrap">
-            ${balls}
-          </div>
-          <div style="margin-top:14px; font-size:11px; color:var(--text-dim);">
-            <i class="fas fa-check-circle" style="color:var(--emerald)"></i> Ultra-Edge DRS synchronized • Every 4s delivery tick
-          </div>
-        </div>
-      </div>
-
-      <div class="sim-stats-table-row">
-        <div class="crease-col">
-          <div class="col-header-label">BATSMEN AT CREASE</div>
-          <table class="crease-table">
+          <table class="sim-stats-table">
             <thead>
-              <tr><th>BATTER</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr>
+              <tr><th>BATSMAN</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th></tr>
             </thead>
-            <tbody>
-              ${batsmen}
-            </tbody>
+            <tbody>${batsmen}</tbody>
           </table>
         </div>
 
-        <div class="crease-col">
-          <div class="col-header-label">CURRENT BOWLER</div>
-          <table class="crease-table">
-            <thead>
-              <tr><th>BOWLER</th><th>O</th><th>R</th><th>W</th><th>ECON</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>${bowler.name} *</td>
-                <td>${bowler.overs}</td>
-                <td>${bowler.runs}</td>
-                <td><strong>${bowler.wickets}</strong></td>
-                <td>${bowler.econ}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="sim-team-pane bowling">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              ${getTeamCrest('SPR', 'fixture-crest')}
+              <strong style="font-size:16px;">${d.bowling_team}</strong>
+            </div>
+            <span style="font-size:11px; background:rgba(6,182,212,0.15); color:var(--cyan); padding:2px 8px; border-radius:3px;">BOWLING</span>
+          </div>
+          <div style="font-size:14px; font-weight:700; color:#fff; margin-bottom:4px;">
+            Current Bowler: <span style="color:var(--cyan);">${bowler.name || 'Bowler'}</span>
+          </div>
+          <div style="font-family:var(--font-mono); font-size:13px; color:var(--text-muted);">
+            Figures: <strong>${bowler.overs || '0.0'} ov, ${bowler.runs || 0} runs, ${bowler.wickets || 0} wkts</strong> (Econ: ${bowler.econ || '0.00'})
+          </div>
+
+          <div style="margin-top:16px;">
+            <span style="font-size:10px; font-weight:800; color:var(--text-dim); letter-spacing:1px; display:block;">THIS OVER:</span>
+            <div class="sim-deliveries-wagon">${balls}</div>
+          </div>
         </div>
       </div>
     </div>
   `;
 }
 
-function renderGlobalApiLiveFeeds(data) {
+function renderGlobalApiLiveFeeds(apiData) {
   const container = document.getElementById('liveHubViewport');
   if (!container) return;
 
-  if (data.status !== 'success' || !data.data || data.data.length === 0) {
+  const matches = (apiData && apiData.data) || [];
+
+  if (matches.length === 0) {
     container.innerHTML = `
-      <div style="text-align:center; padding:40px; background:var(--bg-card); border-radius:var(--radius-md);">
-        <i class="fas fa-globe text-gold" style="font-size:28px; margin-bottom:8px;"></i>
-        <h4>CricketData.org Live Stream</h4>
-        <p style="color:var(--text-muted); font-size:13px;">No external matches currently in play worldwide. Switch to <strong>NPL Season 3 Matchday</strong> above!</p>
+      <div class="matchday-upcoming-banner">
+        <h4 style="font-size:16px; margin-bottom:8px;">No International Matches In-Play Right Now</h4>
+        <p style="font-size:13px; color:var(--text-dim);">CricketData.org API is active and verified. Switch back to NPL Season 3 tab to view the opening fixtures.</p>
       </div>
     `;
     return;
   }
 
-  const list = data.data.slice(0, 9);
   container.innerHTML = `
-    <div style="display:flex; justify-content:space-between; margin-bottom:14px; font-size:12px; color:var(--text-muted);">
-      <span><i class="fas fa-satellite-dish" style="color:var(--emerald)"></i> <strong>CricketData.org REST API:</strong> Displaying active global cricket matches</span>
-      <span>Daily API Quota: <strong>${data.info?.hitsToday || 1} / ${data.info?.hitsLimit || 100}</strong></span>
-    </div>
-    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(360px, 1fr)); gap:16px;">
-      ${list.map(m => `
-        <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:18px;">
-          <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:10px;">
-            <span style="color:var(--crimson); font-weight:800;">${(m.ms || 'MATCH').toUpperCase()}</span>
-            <span style="color:var(--text-dim);">${m.matchType || 'T20'} • ${m.series ? m.series.substring(0,25) + '...' : ''}</span>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:14px;">
+      ${matches.slice(0, 6).map(m => `
+        <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:14px;">
+          <div style="font-size:11px; color:var(--gold); font-family:var(--font-action); margin-bottom:4px;">
+            ${m.matchType?.toUpperCase() || 'T20 MATCH'}
           </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-weight:700;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-weight:700;">
             <span>${m.t1 || 'Team 1'}</span>
             <span style="color:var(--gold); font-family:var(--font-mono);">${m.t1s || '—'}</span>
           </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:700;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-weight:700;">
             <span>${m.t2 || 'Team 2'}</span>
             <span style="color:var(--gold); font-family:var(--font-mono);">${m.t2s || '—'}</span>
           </div>
@@ -599,14 +590,18 @@ function renderFixturesCards(data) {
       const match = m[k];
       const p = match.PAIRINGS || match.pairings || [];
       const scores = match.score || [];
+      const t1 = p[0] || 'Team 1';
+      const t2 = p[1] || 'Team 2';
       return {
         match_number: match.match_number,
         stage: typeof match.match_number === 'string' ? 'Playoffs' : 'League Stage',
         date: match.date,
         time: match.time,
         title: match.TITLE || match.title,
-        team1: p[0] || 'Team 1',
-        team2: p[1] || 'Team 2',
+        team1: getTeamCodeFromName(t1),
+        team1_name: t1,
+        team2: getTeamCodeFromName(t2),
+        team2_name: t2,
         score1: scores[0] ? `${scores[0].runs}/${scores[0].wickets} (${scores[0].overs} ov)` : '',
         score2: scores[1] ? `${scores[1].runs}/${scores[1].wickets} (${scores[1].overs} ov)` : '',
         result: match.result,
@@ -623,9 +618,9 @@ function renderFixturesCards(data) {
 
   grid.innerHTML = matches.map((m, idx) => {
     const isPlayoff = m.stage === 'Playoffs';
-    const c1 = FRANCHISE_MAP[m.team1]?.color || '#fff';
-    const c2 = FRANCHISE_MAP[m.team2]?.color || '#fff';
     const numDisplay = typeof m.match_number === 'string' ? m.match_number : `Match ${m.match_number}`;
+    const code1 = m.team1 || getTeamCodeFromName(m.team1_name);
+    const code2 = m.team2 || getTeamCodeFromName(m.team2_name);
 
     return `
       <div class="fixture-item-card ${isPlayoff ? 'is-playoff' : ''}" onclick="openMatchDetailsModal(${idx})">
@@ -636,23 +631,27 @@ function renderFixturesCards(data) {
 
         <div class="fix-teams-flex">
           <div class="fix-team-pane left">
-            <span class="fix-team-code" style="color:${c1}">${m.team1}</span>
-            <span class="fix-team-name">${m.team1_name || m.team1}</span>
-            ${m.score1 ? `<span style="font-family:var(--font-mono); font-size:15px; font-weight:700; color:var(--gold);">${m.score1}</span>` : ''}
+            ${getTeamCrest(code1, 'fixture-crest')}
+            <div class="fix-team-text">
+              <span class="fix-team-name">${m.team1_name || m.team1}</span>
+              ${m.score1 ? `<span class="fix-team-score">${m.score1}</span>` : ''}
+            </div>
           </div>
 
           <div class="fix-vs-circle">VS</div>
 
           <div class="fix-team-pane right">
-            <span class="fix-team-code" style="color:${c2}">${m.team2}</span>
-            <span class="fix-team-name">${m.team2_name || m.team2}</span>
-            ${m.score2 ? `<span style="font-family:var(--font-mono); font-size:15px; font-weight:700; color:var(--gold);">${m.score2}</span>` : ''}
+            ${getTeamCrest(code2, 'fixture-crest')}
+            <div class="fix-team-text">
+              <span class="fix-team-name">${m.team2_name || m.team2}</span>
+              ${m.score2 ? `<span class="fix-team-score">${m.score2}</span>` : ''}
+            </div>
           </div>
         </div>
 
         <div class="fix-bottom-strip">
-          <span style="color:var(--text-dim);"><i class="fas fa-map-pin"></i> TU Ground, Kirtipur</span>
-          <span style="font-weight:700; color:var(--emerald);">
+          <span style="color:var(--text-dim);"><i class="fas fa-map-pin text-crimson"></i> TU Ground, Kirtipur</span>
+          <span class="fix-status-pill">
             ${m.result ? m.result : (m.match_status_text || 'Upcoming Fixture')}
           </span>
         </div>
@@ -679,7 +678,7 @@ function renderStandingsTable(data) {
     rows = list.map((t, idx) => ({
       rank: t.rank || idx + 1,
       team: t.team,
-      code: Object.keys(FRANCHISE_MAP).find(k => FRANCHISE_MAP[k].name === t.team) || 'NPL',
+      code: getTeamCodeFromName(t.team),
       played: t.matches_played,
       won: t.wins,
       lost: t.losses,
@@ -693,7 +692,7 @@ function renderStandingsTable(data) {
   tbody.innerHTML = rows.map((r, i) => {
     const isTop2 = i < 2;
     const isTop4 = i < 4;
-    const cfg = FRANCHISE_MAP[r.code] || { color: '#6366f1' };
+    const code = r.code || getTeamCodeFromName(r.team);
 
     const formHtml = (r.form || ['-', '-', '-', '-', '-']).map(f => {
       let cls = 'empty';
@@ -703,15 +702,15 @@ function renderStandingsTable(data) {
     }).join('');
 
     return `
-      <tr>
+      <tr class="${isTop2 ? 'row-q1' : (isTop4 ? 'row-eli' : '')}">
         <td>
           <span class="pos-rank ${isTop4 ? 'top' : ''}">${i + 1}</span>
         </td>
         <td>
           <div class="team-flex-cell">
-            <span class="team-color-indicator" style="background:${cfg.color}; box-shadow:0 0 10px ${cfg.color}66;"></span>
-            <span style="font-weight:700; color:#fff;">${r.team}</span>
-            ${isTop2 ? '<span style="font-size:10px; background:rgba(16,185,129,0.15); color:var(--emerald); padding:2px 6px; border-radius:3px;">Q1</span>' : (isTop4 ? '<span style="font-size:10px; background:rgba(0,240,255,0.15); color:var(--cyan); padding:2px 6px; border-radius:3px;">ELI</span>' : '')}
+            ${getTeamCrest(code, 'table-team-crest')}
+            <span class="team-name-strong">${r.team}</span>
+            ${isTop2 ? '<span class="tag-qual q1">Q1</span>' : (isTop4 ? '<span class="tag-qual eli">ELI</span>' : '')}
           </div>
         </td>
         <td class="text-center">${r.played}</td>
@@ -751,18 +750,22 @@ function renderLeaderboards(data) {
           <span class="cap-badge-pill orange">3RD EDITION</span>
         </div>
         <div>
-          ${batters.map((b, i) => `
-            <div class="cap-item-row">
-              <span class="cap-rank-num ${i === 0 ? 'first' : i === 1 ? 'second' : i === 2 ? 'third' : ''}">${i + 1}</span>
-              <div class="cap-player-meta">
-                <div class="cap-player-name">${b.player} <span style="font-size:11px; color:var(--gold)">(${b.team})</span></div>
-                <div class="cap-player-role">${b.role} • 🌍 ${b.country}</div>
+          ${batters.map((b, i) => {
+            const code = getTeamCodeFromName(b.team);
+            return `
+              <div class="cap-item-row">
+                <span class="cap-rank-num ${i === 0 ? 'first' : i === 1 ? 'second' : i === 2 ? 'third' : ''}">${i + 1}</span>
+                ${getTeamCrest(code, 'cap-team-crest')}
+                <div class="cap-player-meta">
+                  <div class="cap-player-name">${b.player} <span style="font-size:11px; color:var(--gold)">(${b.team})</span></div>
+                  <div class="cap-player-role">${b.role} • 🌍 ${b.country}</div>
+                </div>
+                <div class="cap-value-display" style="color:var(--gold)">
+                  ${b.career_t20_sr} <small style="font-size:10px; color:var(--text-dim)">T20 SR</small>
+                </div>
               </div>
-              <div class="cap-value-display" style="color:var(--gold)">
-                ${b.career_t20_sr} <small style="font-size:10px; color:var(--text-dim)">T20 SR</small>
-              </div>
-            </div>
-          `).join('')}
+            `;
+          }).join('')}
         </div>
       </div>
 
@@ -773,18 +776,22 @@ function renderLeaderboards(data) {
           <span class="cap-badge-pill purple">3RD EDITION</span>
         </div>
         <div>
-          ${bowlers.map((b, i) => `
-            <div class="cap-item-row">
-              <span class="cap-rank-num ${i === 0 ? 'first' : i === 1 ? 'second' : i === 2 ? 'third' : ''}">${i + 1}</span>
-              <div class="cap-player-meta">
-                <div class="cap-player-name">${b.player} <span style="font-size:11px; color:#c084fc">(${b.team})</span></div>
-                <div class="cap-player-role">${b.role} • 🌍 ${b.country}</div>
+          ${bowlers.map((b, i) => {
+            const code = getTeamCodeFromName(b.team);
+            return `
+              <div class="cap-item-row">
+                <span class="cap-rank-num ${i === 0 ? 'first' : i === 1 ? 'second' : i === 2 ? 'third' : ''}">${i + 1}</span>
+                ${getTeamCrest(code, 'cap-team-crest')}
+                <div class="cap-player-meta">
+                  <div class="cap-player-name">${b.player} <span style="font-size:11px; color:#c084fc">(${b.team})</span></div>
+                  <div class="cap-player-role">${b.role} • 🌍 ${b.country}</div>
+                </div>
+                <div class="cap-value-display" style="color:#c084fc">
+                  ${b.career_economy} <small style="font-size:10px; color:var(--text-dim)">ECON</small>
+                </div>
               </div>
-              <div class="cap-value-display" style="color:#c084fc">
-                ${b.career_economy} <small style="font-size:10px; color:var(--text-dim)">ECON</small>
-              </div>
-            </div>
-          `).join('')}
+            `;
+          }).join('')}
         </div>
       </div>
     `;
@@ -874,7 +881,7 @@ function renderFranchises(data) {
   const teams = data.teams || [];
 
   container.innerHTML = teams.map(t => {
-    const code = t.code || t.id;
+    const code = t.code || t.id || getTeamCodeFromName(t.name);
     const cfg = FRANCHISE_MAP[code] || { color: '#6366f1' };
     const players = t.players || [];
 
@@ -882,11 +889,11 @@ function renderFranchises(data) {
       <div class="franchise-lux-card" style="border-top:3px solid ${cfg.color}">
         <div class="franchise-header-pane" style="background:linear-gradient(180deg, ${cfg.color}15 0%, transparent 100%)">
           <div class="big-code-watermark">${code}</div>
-          <div class="franchise-shield-emblem" style="background:${cfg.color}; box-shadow:0 0 20px ${cfg.color}66;">
-            ${code}
+          <div class="franchise-crest-showcase">
+            ${getTeamCrest(code, 'franchise-card-crest')}
           </div>
           <h3 class="franchise-title">${t.name}</h3>
-          <span class="franchise-home"><i class="fas fa-map-marker-alt"></i> ${t.city || 'Nepal'}</span>
+          <span class="franchise-home"><i class="fas fa-map-marker-alt text-crimson"></i> ${t.city || 'Nepal'}</span>
           <div class="marquee-badge-line">
             <i class="fas fa-crown"></i> Marquee: <strong>${t.marquee_player}</strong>
           </div>
@@ -898,7 +905,7 @@ function renderFranchises(data) {
             ${players.map(p => {
               const name = typeof p === 'string' ? p : p.name;
               const isOverseas = typeof p === 'object' && p.is_overseas;
-              return `<span class="roster-pill ${isOverseas ? 'overseas' : ''}">${isOverseas ? '🌍 ' : ''}${name}</span>`;
+              return `<span class="roster-pill ${isOverseas ? 'overseas' : ''}">${isOverseas ? '✈️ ' : ''}${name}</span>`;
             }).join('')}
           </div>
         </div>
@@ -923,7 +930,19 @@ function openMatchDetailsModal(idx) {
   } else {
     const raw = (data.matches || [])[idx];
     const k = Object.keys(raw)[0];
-    m = raw[k];
+    const match = raw[k];
+    const p = match.PAIRINGS || match.pairings || [];
+    m = {
+      match_number: match.match_number,
+      stage: typeof match.match_number === 'string' ? 'Playoffs' : 'League Stage',
+      date: match.date,
+      time: match.time,
+      title: match.TITLE || match.title,
+      team1: getTeamCodeFromName(p[0]),
+      team2: getTeamCodeFromName(p[1]),
+      result: match.result,
+      match_status_text: match.result
+    };
   }
 
   if (!m) return;
@@ -931,17 +950,33 @@ function openMatchDetailsModal(idx) {
   const modal = document.getElementById('matchDetailsModal');
   const body = document.getElementById('matchModalInner');
 
+  const code1 = m.team1 || getTeamCodeFromName(m.team1_name);
+  const code2 = m.team2 || getTeamCodeFromName(m.team2_name);
+
   body.innerHTML = `
     <div style="text-align:center; margin-bottom:20px;">
       <span style="font-family:var(--font-action); color:var(--crimson); font-size:13px; letter-spacing:1px; font-weight:700;">
         ${m.stage || 'NPL FIXTURE'} • MATCH ${m.match_number}
       </span>
-      <h2 style="font-size:22px; font-weight:800; margin:6px 0;">
-        ${m.title || m.TITLE || (m.team1 + ' vs ' + m.team2)}
+      <h2 style="font-size:22px; font-weight:800; margin:10px 0;">
+        ${m.title || (m.team1 + ' vs ' + m.team2)}
       </h2>
+
+      <div style="display:flex; justify-content:center; align-items:center; gap:20px; margin:16px 0;">
+        <div style="text-align:center;">
+          ${getTeamCrest(code1, 'fixture-crest')}
+          <div style="font-family:var(--font-action); font-size:14px; font-weight:700; margin-top:4px;">${m.team1_name || m.team1}</div>
+        </div>
+        <span style="font-family:var(--font-action); font-size:18px; font-weight:800; color:var(--text-dim);">VS</span>
+        <div style="text-align:center;">
+          ${getTeamCrest(code2, 'fixture-crest')}
+          <div style="font-family:var(--font-action); font-size:14px; font-weight:700; margin-top:4px;">${m.team2_name || m.team2}</div>
+        </div>
+      </div>
+
       <div style="font-size:12px; color:var(--text-dim);">
-        <i class="far fa-calendar-alt"></i> ${m.date} • ${m.time} &nbsp;|&nbsp;
-        <i class="fas fa-map-marker-alt"></i> TU International Cricket Ground, Kirtipur
+        <i class="far fa-calendar-alt text-gold"></i> ${m.date} • ${m.time} &nbsp;|&nbsp;
+        <i class="fas fa-map-marker-alt text-crimson"></i> TU Cricket Ground, Kirtipur
       </div>
     </div>
 
