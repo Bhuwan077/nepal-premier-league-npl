@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nepal Premier League 2026 | Official NPL 3rd Edition</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@700;800;900&family=JetBrains+Mono:wght@500;700&family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="npl-body">
+
+  <!-- ═══════════════════════════════════════════════════
+       1. TOP BROADCAST TICKER
+       ═══════════════════════════════════════════════════ -->
+  <div class="top-ticker" id="topTicker">
+    <div class="ticker-left-tag">
+      <span class="live-dot"></span>
+      <span class="ticker-heading">NPL TICKER</span>
+    </div>
+    
+    <div class="ticker-marquee-viewport">
+      <div class="ticker-marquee-content" id="tickerMarquee">
+        <div class="ticker-match-pill next-match">
+          <span class="tag-gold">MATCH 1 • OCT 26</span>
+          <span class="teams">LBL vs SPR</span>
+          <span class="meta">5:00 PM NPT • TU Ground, Kirtipur</span>
+        </div>
+        <div class="ticker-match-pill">
+          <span class="tag-subtle">MATCH 2 • OCT 27</span>
+          <span class="teams">BK vs CWR</span>
+          <span class="meta">12:30 PM NPT</span>
+        </div>
+        <div class="ticker-match-pill">
+          <span class="tag-subtle">MATCH 3 • OCT 27</span>
+          <span class="teams">KNY vs JB</span>
+          <span class="meta">5:00 PM NPT</span>
+        </div>
+        <div class="ticker-match-pill">
+          <span class="tag-subtle">MATCH 4 • OCT 28</span>
+          <span class="teams">PKA vs SPR</span>
+          <span class="meta">5:00 PM NPT</span>
+        </div>
+        <div class="ticker-match-pill">
+          <span class="tag-subtle">MATCH 5 • OCT 29</span>
+          <span class="teams">JB vs KMG</span>
+          <span class="meta">12:30 PM NPT</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ticker-right-badges">
+      <span class="icc-badge"><i class="fas fa-shield-alt"></i> ICC T20 STATUS</span>
+      <span class="drs-badge"><i class="fas fa-video"></i> DRS READY</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       2. MODERN NAVBAR
+       ═══════════════════════════════════════════════════ -->
+  <nav class="npl-navbar" id="mainNav">
+    <div class="nav-wrapper">
+      <a href="#hero" class="brand-link" onclick="scrollToId('hero')">
+        <div class="shield-logo">
+          <span class="shield-nepal">NEPAL</span>
+          <span class="shield-title">NPL</span>
+        </div>
+        <div class="brand-text-block">
+          <span class="title-bold">NEPAL PREMIER LEAGUE</span>
+          <span class="subtitle-edition" id="navEditionLabel">3RD EDITION • 2026 OFFICIAL</span>
+        </div>
+      </a>
+
+      <!-- Edition Switcher Dropdown -->
+      <div class="season-switcher-pill">
+        <i class="fas fa-calendar-alt"></i>
+        <label for="editionPicker">SEASON:</label>
+        <select id="editionPicker" onchange="changeEdition(this.value)">
+          <option value="season3" selected>Season 3 (2026 - Current)</option>
+          <option value="season1">Season 1 (2024 - Archive)</option>
+        </select>
+      </div>
+
+      <div class="nav-links-menu" id="navMenu">
+        <a href="#hero" class="nav-item active" data-section="hero"><i class="fas fa-home"></i> Home</a>
+        <a href="#live-center" class="nav-item" data-section="live"><i class="fas fa-broadcast-tower"></i> Live Center</a>
+        <a href="#fixtures-sec" class="nav-item" data-section="fixtures"><i class="fas fa-calendar-check"></i> Fixtures</a>
+        <a href="#standings-sec" class="nav-item" data-section="standings"><i class="fas fa-trophy"></i> Points Table</a>
+        <a href="#stats-sec" class="nav-item" data-section="stats"><i class="fas fa-chart-line"></i> Performers</a>
+        <a href="#teams-sec" class="nav-item" data-section="teams"><i class="fas fa-users-cog"></i> Teams</a>
+      </div>
+
+      <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════
+       3. HERO BROADCAST STAGE
+       ═══════════════════════════════════════════════════ -->
+  <section class="hero-stage" id="hero">
+    <div class="hero-glow-lights"></div>
+    <div class="hero-stadium-grid"></div>
+
+    <div class="hero-content-wrap">
+      
+      <!-- Left Column: Big Headline & Countdown -->
+      <div class="hero-left-pane">
+        <div class="badge-tag-row">
+          <span class="hero-badge badge-glow"><i class="fas fa-fire"></i> SEASON 3 OFFICIAL</span>
+          <span class="hero-badge badge-blue"><i class="fas fa-certificate"></i> OFFICIAL ICC TWENTY20</span>
+          <span class="hero-badge badge-green"><i class="fas fa-cube"></i> DRS 3D BALL-TRACKING</span>
+        </div>
+
+        <h1 class="hero-main-title">
+          THE PRIDE OF<br>
+          <span class="text-gradient-gold">HIMALAYAN CRICKET.</span>
+        </h1>
+
+        <p class="hero-description">
+          8 Elite Franchises. 32 Epic T20 Clashes. World-Class Overseas Stars.
+          Live from the iconic <strong>Tribhuvan University Ground, Kirtipur</strong>.
+        </p>
+
+        <!-- Dynamic Live Countdown Card to Match 1 -->
+        <div class="countdown-glass-card" id="heroCountdownCard">
+          <div class="card-header-bar">
+            <span class="header-tag"><i class="far fa-clock"></i> COUNTDOWN TO TOURNAMENT OPENER</span>
+            <span class="match-name-tag">LBL vs SPR • MATCH 1</span>
+          </div>
+
+          <div class="countdown-digit-grid">
+            <div class="digit-box"><span id="cdDays">00</span><small>DAYS</small></div>
+            <div class="digit-separator">:</div>
+            <div class="digit-box"><span id="cdHours">00</span><small>HOURS</small></div>
+            <div class="digit-separator">:</div>
+            <div class="digit-box"><span id="cdMins">00</span><small>MINUTES</small></div>
+            <div class="digit-separator">:</div>
+            <div class="digit-box"><span id="cdSecs">00</span><small>SECONDS</small></div>
+          </div>
+
+          <div class="card-footer-bar">
+            <span><i class="fas fa-map-marker-alt"></i> TU International Cricket Ground, Kirtipur</span>
+            <span><i class="fas fa-calendar-day"></i> Monday, October 26 • 5:00 PM NPT</span>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <button class="btn btn-crimson" onclick="scrollToId('live-center')">
+            <i class="fas fa-broadcast-tower"></i> Open Live Match Center
+          </button>
+          <button class="btn btn-glass" onclick="scrollToId('fixtures-sec')">
+            <i class="fas fa-calendar-alt"></i> View Full 32 Fixtures
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Opening Match Spotlight -->
+      <div class="hero-right-pane">
+        <div class="spotlight-glass-container">
+          <div class="spotlight-top-pill">
+            <span class="tag-live-accent">BLOCKBUSTER OPENER • OCT 26</span>
+            <span class="tag-drs"><i class="fas fa-shield-alt"></i> DRS ENABLED</span>
+          </div>
+
+          <div class="spotlight-teams-showcase">
+            <div class="spotlight-team left">
+              <div class="team-crest-shield lbl-shield">LBL</div>
+              <h3 class="team-name">Lumbini Lions</h3>
+              <span class="star-captain"><i class="fas fa-crown"></i> Rohit Paudel (C)</span>
+              <span class="intl-names">Ben Cutting • Unmukt Chand</span>
+            </div>
+
+            <div class="vs-orbit-divider">
+              <div class="vs-circle">VS</div>
+              <span class="time-label">OCT 26<br><strong>5:00 PM</strong></span>
+            </div>
+
+            <div class="spotlight-team right">
+              <div class="team-crest-shield spr-shield">SPR</div>
+              <h3 class="team-name">Sudurpaschim Royals</h3>
+              <span class="star-captain"><i class="fas fa-crown"></i> Dipendra Airee (C)</span>
+              <span class="intl-names">Scott Kuggeleijn • McMullen</span>
+            </div>
+          </div>
+
+          <div class="spotlight-intel-strip">
+            <div class="intel-col">
+              <span class="label">VENUE</span>
+              <span class="val">Kirtipur Ground</span>
+            </div>
+            <div class="intel-col">
+              <span class="label">WEATHER</span>
+              <span class="val">22°C Clear Night</span>
+            </div>
+            <div class="intel-col">
+              <span class="label">STATUS</span>
+              <span class="val text-gold">Official ICC T20</span>
+            </div>
+          </div>
+
+          <button class="btn-inspect-opener" onclick="scrollToId('live-center')">
+            <i class="fas fa-eye"></i> View Matchday Hub & Probable XIs
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       4. LIVE CENTER (AUTHENTIC STATUS & DEMO MODE)
+       ═══════════════════════════════════════════════════ -->
+  <section class="content-section" id="live-center">
+    <div class="section-container">
+      
+      <div class="section-header-flex">
+        <div>
+          <span class="sub-headline"><i class="fas fa-signal"></i> REAL-TIME MATCH HUB</span>
+          <h2 class="main-headline">LIVE MATCH CENTER</h2>
+        </div>
+
+        <div class="hub-tabs-row">
+          <button class="hub-tab-btn active" id="tabBtnNpl" onclick="switchLiveTab('npl')">
+            <i class="fas fa-flag"></i> NPL Season 3 Matchday
+          </button>
+          <button class="hub-tab-btn" id="tabBtnGlobal" onclick="switchLiveTab('global')">
+            <i class="fas fa-globe"></i> Global Cricket API (Live Now)
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Center Dynamic Display Area -->
+      <div id="liveHubContent" class="live-hub-viewport">
+        <!-- Rendered by app.js -->
+        <div class="loading-pulse-box">
+          <div class="pulsing-spinner"></div>
+          <p>Connecting to Live Match Engines...</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       5. 32-MATCH TOURNAMENT FIXTURES
+       ═══════════════════════════════════════════════════ -->
+  <section class="content-section bg-darker" id="fixtures-sec">
+    <div class="section-container">
+      
+      <div class="section-header-flex">
+        <div>
+          <span class="sub-headline"><i class="fas fa-calendar-alt"></i> SCHEDULE & RESULTS</span>
+          <h2 class="main-headline" id="fixturesSectionTitle">NPL 3RD EDITION FIXTURES (2026)</h2>
+        </div>
+
+        <div class="filter-button-group" id="fixturesFilterGroup">
+          <button class="filter-pill-btn active" onclick="applyFixtureFilter('all', this)">All 32 Matches</button>
+          <button class="filter-pill-btn" onclick="applyFixtureFilter('opening', this)">Opening Week</button>
+          <button class="filter-pill-btn" onclick="applyFixtureFilter('playoff', this)">Playoffs & Final (Nov 17-21)</button>
+        </div>
+      </div>
+
+      <div class="fixtures-cards-grid" id="fixturesGrid">
+        <div class="loading-pulse-box">
+          <div class="pulsing-spinner"></div>
+          <p>Loading Fixtures Schedule...</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       6. POINTS TABLE & STANDINGS
+       ═══════════════════════════════════════════════════ -->
+  <section class="content-section" id="standings-sec">
+    <div class="section-container">
+      
+      <div class="section-header-flex">
+        <div>
+          <span class="sub-headline"><i class="fas fa-trophy"></i> LEAGUE STANDINGS</span>
+          <h2 class="main-headline" id="standingsSectionTitle">POINTS TABLE — 3RD EDITION</h2>
+        </div>
+
+        <div class="qualification-legend">
+          <span class="legend-badge top-2"><span class="dot"></span> Top 2: Qualifier 1</span>
+          <span class="legend-badge top-4"><span class="dot"></span> 3 & 4: Eliminator</span>
+        </div>
+      </div>
+
+      <div class="standings-table-container">
+        <div class="table-scroll-area">
+          <table class="npl-styled-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">POS</th>
+                <th>TEAM</th>
+                <th class="text-center">MATCHES</th>
+                <th class="text-center">WON</th>
+                <th class="text-center">LOST</th>
+                <th class="text-center">N/R</th>
+                <th class="text-center">NET RUN RATE</th>
+                <th class="text-center head-pts">POINTS</th>
+                <th class="text-center">RECENT FORM</th>
+              </tr>
+            </thead>
+            <tbody id="standingsTableBody">
+              <!-- Rendered by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       7. STATS & LEADERBOARDS
+       ═══════════════════════════════════════════════════ -->
+  <section class="content-section bg-darker" id="stats-sec">
+    <div class="section-container">
+      
+      <div class="section-header-flex">
+        <div>
+          <span class="sub-headline"><i class="fas fa-medal"></i> INDIVIDUAL HONORS</span>
+          <h2 class="main-headline">TOP RUN SCORERS & WICKET TAKERS</h2>
+        </div>
+
+        <div class="cap-legend-tags">
+          <span class="cap-tag orange"><i class="fas fa-baseball-ball"></i> Orange Cap Race (Batters)</span>
+          <span class="cap-tag purple"><i class="fas fa-bullseye"></i> Purple Cap Race (Bowlers)</span>
+        </div>
+      </div>
+
+      <div class="stats-split-grid" id="statsSplitGrid">
+        <!-- Rendered by app.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       8. FRANCHISES & OFFICIAL SQUADS
+       ═══════════════════════════════════════════════════ -->
+  <section class="content-section" id="teams-sec">
+    <div class="section-container">
+      
+      <div class="section-header-flex">
+        <div>
+          <span class="sub-headline"><i class="fas fa-shield-alt"></i> 8 MEGA FRANCHISES</span>
+          <h2 class="main-headline">TEAMS & COMPLETE ROSTERS</h2>
+        </div>
+        <p class="section-desc-note">Nepal's finest national icons teamed up with proven international powerhouses.</p>
+      </div>
+
+      <div class="franchises-cards-grid" id="teamsCardsGrid">
+        <!-- Rendered by app.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       9. INTERACTIVE MATCH POPUP MODAL
+       ═══════════════════════════════════════════════════ -->
+  <div class="modal-backdrop-layer" id="matchModalBackdrop" onclick="handleModalOutsideClick(event)">
+    <div class="modal-dialog-box">
+      <button class="modal-exit-button" onclick="closeMatchModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-inner-content" id="modalInnerContent">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       10. OFFICIAL FOOTER
+       ═══════════════════════════════════════════════════ -->
+  <footer class="npl-footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-brand-pane">
+          <div class="shield-logo mini-logo">
+            <span class="shield-title">NPL</span>
+          </div>
+          <h4>NEPAL PREMIER LEAGUE</h4>
+          <p>The premier Twenty20 cricket tournament sanctioned by the Cricket Association of Nepal (CAN) and the International Cricket Council (ICC).</p>
+        </div>
+
+        <div class="footer-links-pane">
+          <h5>QUICK LINKS</h5>
+          <ul>
+            <li><a href="#live-center">Live Matchday Hub</a></li>
+            <li><a href="#fixtures-sec">Complete 32 Fixtures</a></li>
+            <li><a href="#standings-sec">Points Table & NRR</a></li>
+            <li><a href="#stats-sec">Orange & Purple Cap</a></li>
+            <li><a href="#teams-sec">Franchise Squads</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-api-pane">
+          <h5>API ENGINE INTEGRATION</h5>
+          <div class="api-status-row">
+            <span class="status-indicator-dot online"></span>
+            <span>CricketData.org REST Live Feed</span>
+          </div>
+          <div class="api-status-row">
+            <span class="status-indicator-dot online"></span>
+            <span>OpenCricket Ball-by-Ball Engine</span>
+          </div>
+          <div class="api-status-row">
+            <span class="status-indicator-dot online"></span>
+            <span>NPL Official 3rd Edition Database</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-legal-bar">
+        <span>© 2026 Nepal Premier League (NPL) • Cricket Association of Nepal (CAN). All rights reserved.</span>
+        <span><i class="fas fa-map-marker-alt"></i> Tribhuvan University Ground, Kirtipur</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
